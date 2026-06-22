@@ -7,21 +7,54 @@
     
     <!-- External Leaflet CSS for Maps -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
-    <!-- FontAwesome for Premium Icons -->
+    <!-- FontAwesome Pro Stylesheet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-    
+    <!-- Google Typography Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
     <style>
-        /* Modern Color Palette & Typography Restructure */
+        /* Design System Variables */
         :root {
             --primary: #0284c7;
-            --primary-dark: #0369a1;
+            --primary-gradient: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
             --secondary: #16a34a;
+            --secondary-gradient: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
             --dark-slate: #0f172a;
             --light-bg: #f8fafc;
+            --card-bg: #ffffff;
             --text-main: #334155;
             --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --radius-lg: 24px;
+            --radius-md: 16px;
+            --radius-sm: 12px;
+            --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
+        /* Smooth Scrolling Configuration */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--light-bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Core Global Resets */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -29,800 +62,1265 @@
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--light-bg);
             color: var(--text-main);
-            line-height: 1.6;
+            line-height: 1.7;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Hero Banner Redesign */
-        header {
-            background: linear-gradient(135deg, #0c4a6e 0%, #0284c7 50%, #16a34a 100%);
-            color: white;
-            padding: 120px 20px 100px;
-            text-align: center;
+        /* Interactive Navigation Architecture */
+                /* Interactive Navigation Architecture */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            /* iOS Premium Glassmorphism Effect */
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(30px) saturate(210%);
+            -webkit-backdrop-filter: blur(30px) saturate(210%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+            padding: 10px 40px; /* Decreased height */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition-smooth);
+        }
+
+        .navbar.scrolled {
+            padding: 8px 40px; /* Further decreased on scroll */
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(25px) saturate(190%);
+            -webkit-backdrop-filter: blur(25px) saturate(190%);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.03);
+        }
+
+
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.4rem;
+            color: var(--dark-slate);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-logo span {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition-smooth);
             position: relative;
-            overflow: hidden;
         }
 
-        header::before {
+        .nav-link::after {
             content: '';
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: url('https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=80') center/cover no-repeat;
-            opacity: 0.12;
-            pointer-events: none;
+            bottom: -6px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: var(--transition-smooth);
         }
 
-        header .logo-text {
-            font-size: 1.2rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+        }
+
+        .nav-cta {
+            background: var(--primary-gradient);
+            color: white !important;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(2, 132, 199, 0.25);
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35);
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-slate);
+        }
+
+        /* Advanced Premium Hero Section */
+        header {
+            background: radial-gradient(circle at 90% 10%, rgba(22, 163, 74, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 10% 90%, rgba(2, 132, 199, 0.15) 0%, transparent 50%),
+                        linear-gradient(180deg, #f1f5f9 0%, #f8fafc 100%);
+            padding: 200px 20px 140px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-badge {
+            background: rgba(2, 132, 199, 0.08);
+            color: var(--primary);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.85rem;
             font-weight: 700;
-            color: #38bdf8;
-            margin-bottom: 10px;
-            display: block;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+            animation: fadeInDown 0.8s ease;
         }
 
         header h1 {
-            font-size: 3.5rem;
-            font-weight: 800;
-            margin-bottom: 15px;
-            line-height: 1.2;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 4rem;
+            font-weight: 700;
+            color: var(--dark-slate);
+            line-height: 1.15;
+            max-width: 900px;
+            margin: 0 auto 25px;
+            letter-spacing: -1px;
+            animation: fadeInUp 0.8s ease;
+        }
+
+        header h1 span {
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         header p {
-            max-width: 750px;
-            margin: 0 auto 35px;
-            font-size: 1.2rem;
-            color: #e2e8f0;
-            font-weight: 300;
+            max-width: 680px;
+            margin: 0 auto 40px;
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            font-weight: 400;
+            animation: fadeInUp 1s ease;
         }
 
         .btn-container {
             display: flex;
             justify-content: center;
-            gap: 15px;
+            gap: 20px;
             flex-wrap: wrap;
+            animation: fadeInUp 1.2s ease;
         }
 
         .btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 14px 28px;
+            gap: 10px;
+            padding: 16px 36px;
             border-radius: 50px;
             font-weight: 600;
             text-decoration: none;
-            transition: all 0.3s ease;
             font-size: 1rem;
+            transition: var(--transition-smooth);
+            cursor: pointer;
         }
 
         .btn-primary {
-            background-color: #ffffff;
-            color: var(--primary-dark);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.3);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-            background-color: #f1f5f9;
+            transform: translateY(-3px);
+            box-shadow: 0 14px 35px rgba(2, 132, 199, 0.4);
         }
 
         .btn-secondary {
-            background-color: transparent;
-            color: #ffffff;
-            border: 2px solid rgba(255, 255, 255, 0.6);
+            background: white;
+            color: var(--dark-slate);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
         }
 
         .btn-secondary:hover {
-            border-color: #ffffff;
-            background: rgba(255,255,255,0.1);
+            transform: translateY(-3px);
+            background: #fdfdfd;
+            border-color: #cbd5e1;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
         }
 
-        /* Global Sections layout */
+        /* Generic Framework Layout Sections */
         section {
-            padding: 80px 20px;
-            max-width: 1200px;
+            padding: 100px 40px;
+            max-width: 1300px;
             margin: auto;
         }
 
-        .section-title {
+        .section-header {
             text-align: center;
-            font-size: 2.2rem;
-            color: var(--dark-slate);
-            margin-bottom: 15px;
-            font-weight: 700;
-            position: relative;
+            max-width: 700px;
+            margin: 0 auto 60px;
         }
 
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 60px;
-            height: 4px;
-            background: var(--primary);
-            margin: 12px auto 0;
-            border-radius: 2px;
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.5rem;
+            color: var(--dark-slate);
+            font-weight: 700;
+            margin-bottom: 15px;
+            letter-spacing: -0.5px;
         }
 
         .section-subtitle {
-            text-align: center;
-            max-width: 600px;
-            margin: 0 auto 50px;
             color: var(--text-muted);
+            font-size: 1.1rem;
         }
 
-        /* Founder Profile Spotlight Section */
-        .founder-section {
-            background: white;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-            padding: 50px;
-            margin-top: -40px;
+        /* Executive Founder Layout Card */
+        .founder-wrapper {
+            margin-top: -60px;
             position: relative;
-            z-index: 10;
+            z-index: 20;
+            padding: 0 20px;
+        }
+
+        .founder-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 20px 50px rgba(15, 23, 42, 0.06);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            padding: 60px;
             display: grid;
-            grid-template-columns: 280px 1fr;
-            gap: 40px;
+            grid-template-columns: 320px 1fr;
+            gap: 60px;
             align-items: center;
         }
 
-        @media(max-width: 768px) {
-            .founder-section {
-                grid-template-columns: 1fr;
-                text-align: center;
-                padding: 30px 20px;
-            }
-            header h1 { font-size: 2.5rem; }
-        }
-
-        .founder-img-wrapper {
+        .founder-visual {
             position: relative;
-            width: 240px;
-            height: 240px;
-            margin: 0 auto;
+            width: 300px;
+            height: 340px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
         }
 
         .founder-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-            background: #e2e8f0; /* Fallback accent for placeholder */
+            background: #e2e8f0;
         }
 
-        .founder-badge {
+        .founder-meta-badge {
             position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--secondary);
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             color: white;
-            padding: 6px 16px;
-            font-size: 0.8rem;
+            padding: 12px;
+            text-align: center;
+            border-radius: var(--radius-sm);
             font-weight: 700;
-            border-radius: 20px;
-            white-space: nowrap;
+            font-size: 0.85rem;
             letter-spacing: 1px;
         }
 
-        .founder-info h3 {
-            font-size: 1.8rem;
+        .founder-content h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2.2rem;
             color: var(--dark-slate);
-            margin-bottom: 5px;
+            margin-bottom: 6px;
         }
 
-        .founder-info .title {
+        .founder-content .designation {
             color: var(--primary);
-            font-weight: 600;
-            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 1.05rem;
             display: block;
+            margin-bottom: 25px;
         }
 
-        /* Impact Section Grid & Counter Animations */
-        .impact-bg { background-color: #ffffff; }
-        .cards {
+        .founder-content p {
+            color: var(--text-main);
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        /* Statistics Counter Dashboard Section */
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
         }
 
-        .card {
-            background: var(--light-bg);
-            padding: 35px 25px;
-            border-radius: 20px;
+        .stats-card {
+            background: var(--card-bg);
+            padding: 40px 30px;
+            border-radius: var(--radius-md);
             text-align: center;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.02);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
-        }
-
-        .card-icon {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-
-        .counter-number {
-            font-size: 2.8rem;
-            font-weight: 800;
-            color: var(--dark-slate);
-            margin-bottom: 5px;
-            display: inline-block;
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        /* Interactive Map Container */
-        #map {
-            height: 480px;
-            border-radius: 24px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-            border: 4px solid white;
-        }
-
-        /* Work Gallery Horizontal Drag/Swipe UI Elements */
-        .gallery-container {
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(15, 23, 42, 0.02);
+            transition: var(--transition-smooth);
             position: relative;
-            margin: 0 -20px;
-            padding: 10px 20px;
-        }
-
-        .gallery {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            padding-bottom: 20px;
-            scrollbar-width: none; /* Firefox */
-            -webkit-overflow-scrolling: touch;
-        }
-
-        .gallery::-webkit-scrollbar {
-            display: none; /* Chrome/Safari */
-        }
-
-        .gallery-item {
-            flex: 0 0 300px;
-            scroll-snap-align: start;
-            position: relative;
-            height: 240px;
-            border-radius: 18px;
             overflow: hidden;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.08);
         }
 
-        .gallery-item img {
+        .stats-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: transparent;
+            transition: var(--transition-smooth);
+        }
+
+        .stats-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+            border-color: rgba(2, 132, 199, 0.2);
+        }
+
+        .stats-card:hover::before {
+            background: var(--primary-gradient);
+        }
+
+        .stats-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(2, 132, 199, 0.06);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.8rem;
+            margin: 0 auto 25px;
+            transition: var(--transition-smooth);
+        }
+
+        .stats-card:hover .stats-icon {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .counter-container {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: var(--dark-slate);
+            line-height: 1;
+            margin-bottom: 10px;
+        }
+
+        .stats-card p {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        /* Intelligent Map Dashboard Architecture */
+        .map-wrapper {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border-color);
+            padding: 24px;
+            box-shadow: 0 20px 40px rgba(15, 23, 42, 0.04);
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+            height: 600px;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius-md);
+            z-index: 10;
+        }
+
+        .map-sidebar {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .sidebar-header {
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 16px;
+        }
+
+        .sidebar-header h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            color: var(--dark-slate);
+        }
+
+        .location-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            list-style: none;
+        }
+
+        .location-item {
+            background: var(--light-bg);
+            border: 1px solid var(--border-color);
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .location-item:hover, .location-item.active {
+            background: white;
+            border-color: var(--primary);
+            box-shadow: 0 8px 20px rgba(2, 132, 199, 0.08);
+            transform: translateX(4px);
+        }
+
+        .location-item h5 {
+            color: var(--dark-slate);
+            font-size: 1rem;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .location-item h5 i {
+            color: var(--primary);
+        }
+
+        .location-item p {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Horizontal Draggable Gallery Module */
+        .gallery-carousel-wrapper {
+            position: relative;
+            margin: 0 -40px;
+            padding: 20px 40px;
+            overflow-x: auto;
+            display: flex;
+            gap: 30px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+
+        .gallery-carousel-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .gallery-card {
+            flex: 0 0 380px;
+            scroll-snap-align: start;
+            height: 440px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(15, 23, 42, 0.06);
+        }
+
+        .gallery-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .gallery-item:hover img {
+        .gallery-card:hover img {
             transform: scale(1.08);
         }
 
-        .gallery-caption {
+        .gallery-overlay {
             position: absolute;
-            bottom: 0; left: 0; right: 0;
-            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            inset: 0;
+            background: linear-gradient(180deg, transparent 40%, rgba(15, 23, 42, 0.9) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 30px;
             color: white;
-            padding: 15px;
-            font-size: 0.9rem;
         }
 
-        /* Dual-Layout Donation/QR & Registration Split Layout */
-        .donation-grid {
+        .gallery-overlay span {
+            color: #38bdf8;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .gallery-overlay h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 600;
+        }
+
+        /* Dual Column Execution Segment (Donation / Registration) */
+        .split-grid {
             display: grid;
             grid-template-columns: 1.1fr 0.9fr;
             gap: 40px;
             align-items: start;
         }
 
-        @media(max-width: 900px) {
-            .donation-grid { grid-template-columns: 1fr; }
+        .glass-card {
+            background: var(--card-bg);
+            border-radius: var(--radius-lg);
+            padding: 25px;
+            box-shadow: 0 20px 45px rgba(15, 23, 42, 0.04);
+            border: 1px solid var(--border-color);
+            
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
         }
 
-        /* Beautiful QR Card Section */
-        .qr-card {
-            background: white;
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.05);
+        /* QR Scanner Animation Box */
+        .payment-qr-card {
             text-align: center;
-            border: 1px solid rgba(0,0,0,0.03);
         }
 
-        .qr-container {
+        .qr-scanner-frame {
             position: relative;
-            width: 220px;
-            height: 220px;
-            margin: 0 auto 25px;
-            background: #f8fafc;
-            border-radius: 16px;
-            padding: 15px;
+            width: 240px;
+            height: 240px;
+            background: var(--light-bg);
+            border: 2px dashed #cbd5e1;
+            border-radius: var(--radius-md);
+            margin: 0 auto 30px;
+            padding: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 2px dashed #cbd5e1;
+            overflow: hidden;
         }
 
-        /* Scanner Scanline Animation effect */
-        .qr-container::after {
-            content: '';
-            position: absolute;
-            left: 0; top: 0; width: 100%; height: 3px;
-            background: var(--secondary);
-            box-shadow: 0 0 12px var(--secondary);
-            animation: scanHorizontal 3s ease-in-out infinite;
-        }
-
-        @keyframes scanHorizontal {
-            0% { top: 5%; }
-            50% { top: 90%; }
-            100% { top: 5%; }
-        }
-
-        .qr-placeholder-svg {
+        .qr-svg {
             width: 100%;
             height: 100%;
             color: var(--dark-slate);
         }
 
-        .emotional-quote {
-            font-style: italic;
-            font-size: 1.1rem;
-            color: var(--dark-slate);
-            font-weight: 600;
-            background: #f0fdf4;
-            padding: 15px;
-            border-radius: 12px;
-            border-left: 4px solid var(--secondary);
-            margin-bottom: 20px;
+        .qr-scanner-frame::after {
+            content: '';
+            position: absolute;
+            left: 0; width: 100%; height: 4px;
+            background: var(--secondary);
+            box-shadow: 0 0 15px var(--secondary);
+            animation: hardwareScan 3.5s ease-in-out infinite;
         }
 
-        .upi-id {
+        @keyframes hardwareScan {
+            0%, 100% { top: 5%; }
+            50% { top: 92%; }
+        }
+
+        .quote-banner {
+            background: #f0fdf4;
+            border-left: 4px solid var(--secondary);
+            padding: 16px 20px;
+            border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+            font-style: italic;
+            font-weight: 600;
+            color: #166534;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .upi-badge {
             background: var(--light-bg);
-            padding: 10px 20px;
-            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            padding: 12px 24px;
+            border-radius: 50px;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             font-family: monospace;
-            font-size: 1.05rem;
+            font-size: 1.1rem;
+            font-weight: 700;
             color: var(--dark-slate);
-            font-weight: bold;
-            border: 1px solid #e2e8f0;
+            margin-bottom: 35px;
         }
 
-        /* Tier Pricing List Layout */
-        .transparency-list {
-            margin-top: 25px;
-            text-align: left;
-            border-top: 1px solid #f1f5f9;
-            padding-top: 20px;
+        .upi-badge i {
+            color: var(--secondary);
         }
-        .tier-item {
+
+        .budget-allocation {
+            text-align: left;
+            border-top: 1px solid var(--border-color);
+            padding-top: 30px;
+        }
+
+        .budget-allocation h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            color: var(--dark-slate);
+            margin-bottom: 15px;
+        }
+
+        .allocation-row {
             display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px dashed #f1f5f9;
+            justify-content: justify;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--border-color);
             font-size: 0.95rem;
         }
-        .tier-price { font-weight: 700; color: var(--primary); }
 
-        /* Professional Forms Elements */
-        .form-card {
-            background: white;
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 10px 35px rgba(0,0,0,0.05);
+        .allocation-row :last-child {
+            margin-left: auto;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        /* Form Controls */
+        .form-title-group {
+            margin-bottom: 30px;
+        }
+
+        .form-title-group h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.8rem;
+            color: var(--dark-slate);
+            margin-bottom: 6px;
+        }
+
+        .form-title-group p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
 
         .form-group label {
             display: block;
-            margin-bottom: 6px;
             font-weight: 600;
             font-size: 0.9rem;
+            margin-bottom: 8px;
             color: var(--dark-slate);
         }
 
-        form input, form textarea {
+        .form-control {
             width: 100%;
-            padding: 14px;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
+            padding: 14px 18px;
+            border: 1px solid var(--border-color);
+            background: var(--light-bg);
+            border-radius: var(--radius-sm);
             font-family: inherit;
             font-size: 0.95rem;
-            background-color: var(--light-bg);
-            transition: all 0.3s ease;
+            color: var(--dark-slate);
+            transition: var(--transition-smooth);
         }
 
-        form input:focus, form textarea:focus {
+        .form-control:focus {
             outline: none;
             border-color: var(--primary);
-            background-color: #ffffff;
+            background: white;
             box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.1);
         }
 
-        form button {
-            width: 100%;
-            padding: 14px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background 0.3s ease;
+        textarea.form-control {
+            resize: vertical;
         }
 
-        form button:hover { background: var(--primary-dark); }
+        .btn-submit {
+            width: 100%;
+            border: none;
+            background: var(--primary-gradient);
+            color: white;
+            padding: 16px;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(2, 132, 199, 0.15);
+            transition: var(--transition-smooth);
+        }
 
-        /* Fully Scaled Professional Corporate Footer */
+        .btn-submit:hover {
+            box-shadow: 0 14px 30px rgba(2, 132, 199, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Professional Corporate Footer Layout */
         footer {
             background: var(--dark-slate);
             color: #94a3b8;
-            padding: 80px 20px 30px;
+            padding: 100px 40px 40px;
             font-size: 0.95rem;
         }
 
         .footer-grid {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1.5fr repeat(3, 1fr);
-            gap: 40px;
+            grid-template-columns: 1fr repeat(3, 1fr);
+            gap: 30px;
             border-bottom: 1px solid #334155;
-            padding-bottom: 50px;
-        }
-
-        @media(max-width: 850px) {
-            .footer-grid { grid-template-columns: 1fr 1fr; }
-        }
-        @media(max-width: 480px) {
-            .footer-grid { grid-template-columns: 1fr; }
+            padding-bottom: 60px;
         }
 
         .footer-brand h4 {
+            font-family: 'Space Grotesk', sans-serif;
             color: white;
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-            font-weight: 700;
+            font-size: 1.6rem;
+            margin-bottom: 20px;
         }
+
+        .footer-brand p {
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
         .footer-col h5 {
+            font-family: 'Space Grotesk', sans-serif;
             color: white;
             font-size: 1.1rem;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             font-weight: 600;
         }
 
-        .footer-col ul { list-style: none; }
-        .footer-col ul li { margin-bottom: 12px; }
-        .footer-col ul li a { color: #94a3b8; text-decoration: none; transition: color 0.2s; }
-        .footer-col ul li a:hover { color: #ffffff; }
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-        .footer-contact-item {
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+        }
+
+        .footer-links a:hover {
+            color: white;
+            padding-left: 4px;
+        }
+
+        .contact-pill {
             display: flex;
             align-items: flex-start;
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 12px;
+            margin-bottom: 16px;
         }
-        .footer-contact-item i { color: var(--primary); margin-top: 4px; }
 
-        .social-icons {
+        .contact-pill i {
+            color: var(--primary);
+            margin-top: 5px;
+        }
+
+        .social-cluster {
             display: flex;
             gap: 12px;
-            margin-top: 20px;
         }
-        .social-icons a {
-            width: 40px;
-            height: 40px;
+
+        .social-btn {
+            width: 42px;
+            height: 42px;
             background: #1e293b;
             border-radius: 50%;
-            display: inline-flex;
+            display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            transition: all 0.3s ease;
             text-decoration: none;
+            transition: var(--transition-smooth);
         }
-        .social-icons a:hover { background: var(--primary); transform: translateY(-3px); }
+
+        .social-btn:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            color: white;
+        }
 
         .footer-bottom {
             text-align: center;
-            padding-top: 30px;
-            font-size: 0.85rem;
+            padding-top: 40px;
             color: #64748b;
+            font-size: 0.85rem;
         }
+
+        /* Animation Keyframe Pools */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* High Compatibility Responsive Viewport Media Queries */
+        @media(max-width: 1024px) {
+            header h1 { font-size: 3rem; }
+            .founder-card { grid-template-columns: 1fr; gap: 40px; padding: 40px; }
+            .founder-visual { margin: 0 auto; }
+            .map-wrapper { grid-template-columns: 1fr; height: auto; }
+            #map { height: 400px; }
+            .split-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        @media(max-width: 768px) {
+    /* Prevent overall horizontal viewport leakage */
+    body, html {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    /* Standardize the navbar viewport safety margins */
+        /* Standardize the navbar viewport safety margins */
+    .navbar { 
+        padding: 10px 20px; 
+        box-sizing: border-box;
+    }
+
+
+    /* Fix the 100% + Padding box model calculation blowout */
+    .nav-menu {
+        position: absolute;
+        top: 100%; 
+        left: 0; 
+        width: 100%;
+        box-sizing: border-box; /* Ensures padding stays inside the 100% width boundary */
+        background: white;
+        flex-direction: column;
+        padding: 30px 20px;
+        gap: 20px;
+        box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        display: none;
+    }
+    
+    .nav-menu.open { 
+        display: flex; 
+    }
+    
+    .menu-toggle { 
+        display: block; 
+        z-index: 1001;
+    }
+
+    /* Structural adjustments for the Header & Content blocks */
+    header { 
+        padding-top: 150px; 
+        padding-bottom: 80px;
+    }
+    
+    header h1 { 
+        font-size: 2.1rem; 
+    }
+    
+    section { 
+        padding: 60px 20px; 
+    }
+
+    /* Make the visionary image responsive on small screens */
+    .founder-visual {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+        aspect-ratio: 300 / 340;
+    }
+
+    /* Safe reset for the draggable live action gallery module logs */
+    .gallery-carousel-wrapper {
+        margin: 0 -20px;
+        padding: 20px;
+    }
+}
+#enrollment{
+    overflow:hidden;
+}
+
     </style>
 </head>
 <body>
 
-    <!-- Redesigned Hero Banner Section -->
+    <!-- Premium Interactive Navigation Architecture -->
+    <nav class="navbar">
+                <a href="#" class="nav-logo" style="display:flex;align-items:center;gap:5px;">
+            <img src="dspllogo.png" alt="DSPLCARE Logo" style="height:50px; width:auto; transition: var(--transition-smooth);">
+            <span>DSPLCARE</span>
+        </a>
+
+        <i class="fa-solid fa-bars menu-toggle" id="menuToggle"></i>
+        <ul class="nav-menu" id="navMenu">
+            <li><a href="#" class="nav-link active">Home</a></li>
+            <li><a href="#vision" class="nav-link">Our Vision</a></li>
+            <li><a href="#footprint" class="nav-link">Impact</a></li>
+            <li><a href="#map-dashboard" class="nav-link">Water Tracks</a></li>
+            <li><a href="#gallery" class="nav-link">On-Ground</a></li>
+            <li><a href="#enrollment" class="nav-link">Join Mission</a></li>
+            <li><a href="#donate" class="nav-link nav-cta">Support Us</a></li>
+        </ul>
+    </nav>
+
+    <!-- Professional Corporate Hero Header Section -->
     <header>
-        <span class="logo-text">DSPLCARE ORGANISATION</span>
-        <h1>Dedicated Social Public Livelihood Care</h1>
-        <p>A comprehensive public welfare initiative across India. We believe every person deserves absolute dignity and care—starting with standard local access to free clean drinking water infrastructure.</p>
+        <div class="hero-badge">
+            <i class="fa-solid fa-circle-check"></i> Verified Public Welfare Initiative
+        </div>
+        <h1>Dedicated Social Public<br><span>Livelihood Care Organisation</span></h1>
+        <p>An ecosystem engineered to dismantle local livelihood vulnerabilities across India—starting with foundational infrastructures providing unlimited access to clean, free public water lines.</p>
         <div class="btn-container">
-            <a href="#donate" class="btn btn-primary"><i class="fa-solid fa-heart"></i> Support Mission</a>
-            <a href="#map-section" class="btn btn-secondary"><i class="fa-solid fa-location-dot"></i> Near Water Stands</a>
+            <a href="#donate" class="btn btn-primary"><i class="fa-solid fa-heart"></i> Empower Mission</a>
+            <a href="#map-dashboard" class="btn btn-secondary"><i class="fa-solid fa-location-crosshairs"></i> Track Water Hubs</a>
         </div>
     </header>
 
-    <!-- Founder Spotlight Section -->
-    <section style="padding-top: 0; padding-bottom: 40px;">
-        <div class="founder-section">
-            <div class="founder-img-wrapper">
-                <!-- Replace with founder image link inside src attribute -->
-                <img class="founder-img" src="founders.png" alt="Lavkesh Sharma">
-                <span class="founder-badge">FOUNDERS & VISIONARY</span>
+    <!-- Executive Strategic Profile Spotlight Section -->
+    <div class="founder-wrapper" id="vision">
+        <div class="founder-card">
+            <div class="founder-visual">
+                <img class="founder-img" src="founders.png" alt="Lavkesh Sharma & Rahul Gurjar">
+                <div class="founder-meta-badge">ORGANISATION VISIONARIES</div>
             </div>
-            <div class="founder-info">
-                <h5>Lavkesh Sharma & Rahul Gurjar</h5>
-                <span class="title">Founder, DSPLCARE Organisation</span>
-                <p>Welcome to DSPLCARE. Our objective is straightforward: true civic empowerment starts by filling immediate human livelihood gaps. We kickstarted our ecosystem with clean, highly accessible local community drinking water stands to combat extreme heat stresses. Step by step, we plan to broaden our community operations across India to construct dependable nets of public support for individuals needing it most.</p>
+            <div class="founder-content">
+                <h3>Lavkesh Sharma & Rahul Gurjar</h3>
+                <span class="designation">Founding Council, DSPLCARE Organisation</span>
+                <p>True public empowerment begins when immediate survival stresses are alleviated. We established DSPLCARE to solve root systemic anomalies in community welfare metrics.</p>
+                <p>By engineering modern community drinking water stands to mitigate severe heat and environmental shifts, we are standardizing public utility design. This network is our first critical step in broadening comprehensive field systems across the Indian landscape to sustain populations that need it most.</p>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Dynamic Animated Impact Metrics Section -->
-    <section class="impact-bg">
-        <h2 class="section-title">Our Quantifiable Footprint</h2>
-        <p class="section-subtitle">Real metrics reflecting real public action on the grassroots level.</p>
+    <!-- Metrics Engine & Counter Section -->
+    <section id="footprint">
+        <div class="section-header">
+            <h2 class="section-title">Our Quantifiable Footprint</h2>
+            <p class="section-subtitle">Real-time indicators recording grassroots infrastructure deployments and verified civic output metrics.</p>
+        </div>
         
-        <div class="cards">
-            <div class="card">
-                <div class="card-icon"><i class="fa-solid fa-faucet-drip"></i></div>
-                <div class="counter-number" data-target="5">0</div>
+        <div class="stats-grid">
+            <div class="stats-card">
+                <div class="stats-icon"><i class="fa-solid fa-faucet-drip"></i></div>
+                <div class="counter-container"><span class="counter" data-target="5">0</span></div>
                 <p>Operational Water Hubs</p>
             </div>
-            <div class="card">
-                <div class="card-icon"><i class="fa-solid fa-users"></i></div>
-                <div class="counter-number" data-target="500">0</div><span>+</span>
-                <p>Livelihoods Impacted Monthly</p>
+            <div class="stats-card">
+                <div class="stats-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="counter-container"><span class="counter" data-target="500">0</span>+</div>
+                <p>Livelihoods Sustained Monthly</p>
             </div>
-            <div class="card">
-                <div class="card-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
-                <div class="counter-number" data-target="10">0</div><span>+</span>
-                <p>Dedicated On-field Volunteers</p>
+            <div class="stats-card">
+                <div class="stats-icon"><i class="fa-solid fa-hands-holding-child"></i></div>
+                <div class="counter-container"><span class="counter" data-target="10">0</span>+</div>
+                <p>Active Field Volunteers</p>
             </div>
-            <div class="card">
-                <div class="card-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
-                <div class="counter-number" data-target="20000">0</div>
-                <p>Direct Community Support (₹)</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Interactive Map Section -->
-    <section id="map-section">
-        <h2 class="section-title">Water Stands Locations (Noida)</h2>
-        <p class="section-subtitle">Find high-quality public water structures launched near you.</p>
-        <div id="map"></div>
-    </section>
-
-    <!-- Horizontal Finger-Swipe Fluid Gallery Section -->
-    <section>
-        <h2 class="section-title">On-Ground Action Gallery</h2>
-        <p class="section-subtitle">Swipe or drag horizontally to view the livelihood operations in real-time.</p>
-        
-        <div class="gallery-container">
-            <div class="gallery">
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=400&q=80" alt="Water distribution">
-                    <div class="gallery-caption">Infrastructure Setup Phase</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=400&q=80" alt="Volunteers working">
-                    <div class="gallery-caption">Volunteer Operations</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=400&q=80" alt="Helping people">
-                    <div class="gallery-caption">Community Welfare Days</div>
-                </div>
-                <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=400&q=80" alt="Public utility setup">
-                    <div class="gallery-caption">Water Stands Installations</div>
-                </div>
+            <div class="stats-card">
+                <div class="stats-icon"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                <div class="counter-container"><span class="counter" data-target="20000">0</span>+</div>
+                <p>Direct Community Aid (₹)</p>
             </div>
         </div>
     </section>
 
-    <!-- Donation, Payment Core QR, and Form Split Section -->
-    <section id="donate" style="background: #f1f5f9; border-radius: 32px; padding: 60px 40px; margin-bottom: 60px;">
-        <div class="donation-grid">
+    <!-- Interactive Map Dashboard Unit -->
+    <section id="map-dashboard" style="background-color: #ffffff;">
+        <div class="section-header">
+            <h2 class="section-title">Water Grid Infrastructure Hub</h2>
+            <p class="section-subtitle">Monitor and locate standardized high-grade active drinking water structures managed across the Noida sector.</p>
+        </div>
+
+        <div class="map-wrapper">
+            <div id="map"></div>
+            <div class="map-sidebar">
+                <div class="sidebar-header">
+                    <h4>Active Monitoring Sites</h4>
+                </div>
+                <ul class="location-list" id="locationList">
+                    <!-- Scripting interface appends list arrays contextually here -->
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Horizontal Swipe Action Photo Gallery -->
+    <section id="gallery">
+        <div class="section-header">
+            <h2 class="section-title">On-Ground Action Logs</h2>
+            <p class="section-subtitle">Horizontal live field deployment records captured during utility installation drives.</p>
+        </div>
+
+        <div class="gallery-carousel-wrapper">
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1541544741938-0af808871cc0?auto=format&fit=crop&w=600&q=80" alt="Infrastructure Phase">
+                <div class="gallery-overlay">
+                    <span>Phase I</span>
+                    <h4>Site Auditing & Framework Construction</h4>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1509099836639-18ba1795216d?auto=format&fit=crop&w=600&q=80" alt="Volunteer Ops">
+                <div class="gallery-overlay">
+                    <span>Operations</span>
+                    <h4>Field Resource Management</h4>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=600&q=80" alt="Welfare System">
+                <div class="gallery-overlay">
+                    <span>Welfare Distribution</span>
+                    <h4>Community Assistance Projects</h4>
+                </div>
+            </div>
+            <div class="gallery-card">
+                <img src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=600&q=80" alt="Utility Deployment">
+                <div class="gallery-overlay">
+                    <span>Utility Installation</span>
+                    <h4>Standardized Hub Deployments</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Operational Form & Donation Split Processing Gateway -->
+    <section id="enrollment" style="background: #f1f5f9; border-radius: 40px; margin-bottom: 80px;">
+        <div class="split-grid">
             
-            <!-- Beautiful Animated QR Code Framework Card -->
-            <div class="qr-card">
-                <h3 style="margin-bottom: 10px; font-size: 1.5rem; color: var(--dark-slate)">Empower the Mission</h3>
-                <p style="color: var(--text-muted); margin-bottom: 25px; font-size:0.95rem;">Scan secure code via your preferred payment engine (PhonePe, GPay, Paytm)</p>
-                
-                <div class="qr-container">
-                    <!-- Standard vector structured crisp QR template placeholder -->
-                    <svg class="qr-placeholder-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M3 3h6v6H3V3zm12 0h6v6h-6V3zM3 15h6v6H3v-6zm14 3h.01M15 15h2v2h-2v-2zm2 5h4v-2h-4v2zm2-5h2v2h-2v-2zm-4 3h2v2h-2v-2zM6 6h0M18 6h0M6 18h0" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-                
-                <div class="emotional-quote">
-                    "You can donate ₹1 to ₹25,000 with raw emotions."
+            <!-- Secure Corporate Donation Architecture -->
+            <div class="glass-card payment-qr-card" id="donate">
+                <div class="form-title-group" style="text-align: center;">
+                    <h3>Financial Support Portal</h3>
+                    <p>Process instant transaction tokens natively using secure unified protocols.</p>
                 </div>
 
-                <div class="upi-id">
-                    <i class="fa-solid fa-wallet style-color:var(--secondary)"></i>
-                    <span>UPI ID: dsplcare@upi</span>
+                <div class="qr-scanner-frame" style="display:flex;align-items:center;justify-content:center;">
+    <img 
+        src="donateqr.png" 
+        alt="Donate QR Code"
+        style="width:100%;max-width:220px;height:auto;object-fit:contain;border-radius:8px;"
+    >
+</div>
+
+                <div class="quote-banner">
+                    "Every micro-contribution from ₹1 to ₹25,000 systematically secures community lifeline operations."
                 </div>
 
-                <!-- Transparency List -->
-                <div class="transparency-list">
-                    <h4 style="font-size: 1rem; color: var(--dark-slate); margin-bottom: 10px;">Where Does Your Support Go?</h4>
-                    <div class="tier-item"><span>Standard Local Hub Pure Water Supply</span><span class="tier-price">₹100</span></div>
-                    <div class="tier-item"><span>Fresh Earthen Core Cooling Setup</span><span class="tier-price">₹500</span></div>
-                    <div class="tier-item"><span>Complete End-to-End New Water Stand Installation</span><span class="tier-price">₹5,000</span></div>
+                <div class="upi-badge">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>UPI ID: dhanushgaye@okicici</span>
+                </div>
+
+                <div class="budget-allocation">
+                    <h4>Direct Financial Allocation Stream</h4>
+                    <div class="allocation-row"><span>Standard Pipeline Clean Water Batch Supply</span><span>₹100</span></div>
+                    <div class="allocation-row"><span>Thermodynamic Earthenware Core Cooler Set</span><span>₹500</span></div>
+                    <div class="allocation-row"><span>Full-Scale Structural Stand Installation Asset</span><span>₹5,000</span></div>
                 </div>
             </div>
 
-            <!-- Onboard Volunteer Form Elements -->
-            <div class="form-card">
-                <h3 style="margin-bottom: 8px; font-size: 1.5rem; color: var(--dark-slate)">Volunteer Enrollment</h3>
-                <p style="color: var(--text-muted); margin-bottom: 25px; font-size: 0.95rem;">Join us directly to mobilize livelihood projects dynamically on field.</p>
-                
-                <form action="#">
+            <!-- Field Force Onboarding Automation Form -->
+            <div class="glass-card">
+                <div class="form-title-group">
+                    <h3>Volunteer Enrollment Engine</h3>
+                    <p>Enlist within our organizational deployment force to scale field networks.</p>
+                </div>
+
+                <form id="volunteerForm" onsubmit="event.preventDefault(); alert('Registration payload dispatched successfully.');">
                     <div class="form-group">
-                        <label>Your Full Name</label>
-                        <input type="text" placeholder="John Doe" required />
+                        <label for="volName">Full Identification Name</label>
+                        <input type="text" id="volName" class="form-control" placeholder="Jane Doe" required>
                     </div>
                     <div class="form-group">
-                        <label>Email Address</label>
-                        <input type="email" placeholder="john@example.com" required />
+                        <label for="volEmail">Corporate / Personal Email Route</label>
+                        <input type="email" id="volEmail" class="form-control" placeholder="jane@example.com" required>
                     </div>
                     <div class="form-group">
-                        <label>Contact Phone Number</label>
-                        <input type="tel" placeholder="+91 XXXXX XXXXX" required />
+                        <label for="volPhone">Mobile Telephony Stream</label>
+                        <input type="tel" id="volPhone" class="form-control" placeholder="+91 XXXXX XXXXX" required>
                     </div>
                     <div class="form-group">
-                        <label>Why do you wish to join DSPLCARE?</label>
-                        <textarea rows="4" placeholder="Tell us how you would like to help..." required></textarea>
+                        <label for="volStatement">Statement of Strategic Objective</label>
+                        <textarea id="volStatement" class="form-control" rows="4" placeholder="Outline how you intent to accelerate field operation modules..." required></textarea>
                     </div>
-                    <button type="submit">Submit Registration Info</button>
+                    <button type="submit" class="btn-submit">Submit Registration Credentials</button>
                 </form>
             </div>
 
         </div>
     </section>
 
-    <!-- Professional Corporate Footer Grid -->
+    <!-- Professional Corporate Footer System -->
     <footer>
         <div class="footer-grid">
             <div class="footer-brand">
                 <h4>DSPLCARE</h4>
-                <p style="margin-bottom: 15px;">Dedicated Social Public Livelihood Care Organisation is a legally registered citizen support structure committed to upgrading grassroot urban public utility metrics throughout India.</p>
-                <p><strong>Domain:</strong> dsplcare.org</p>
-                <div class="social-icons">
-                    <a href="#"><i class="fa-brands relative-icon fa-facebook-f"></i></a>
-                    <a href="#"><i class="fa-brands relative-icon fa-twitter"></i></a>
-                    <a href="#"><i class="fa-brands relative-icon fa-instagram"></i></a>
-                    <a href="#"><i class="fa-brands relative-icon fa-linkedin-in"></i></a>
+                <p>Dedicated Social Public Livelihood Care Organisation is an authorized, registered civic support system optimized to upgrade core utility metrics throughout urban corridors.</p>
+                <p><strong>Core Registry:</strong> dsplcare.org</p>
+                                <div class="social-cluster">
+                    <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://x.com/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                    <a href="https://www.youtube.com/" target="_blank" rel="noopener noreferrer" class="social-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
                 </div>
-            </div>
-            
-            <div class="footer-col">
-                <h5>Our Strategy</h5>
-                <ul>
-                    <li><a href="#">Public Health Utility</a></li>
-                    <li><a href="#">Water Stand Architecture</a></li>
-                    <li><a href="#">Livelihood Assistance</a></li>
-                    <li><a href="#">Urban Mitigation</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-col">
-                <h5>Navigation Links</h5>
-                <ul>
-                    <li><a href="#">About Visionary</a></li>
-                    <li><a href="#map-section">Water Stand Trackers</a></li>
-                    <li><a href="#donate">Enrollment Gates</a></li>
-                    <li><a href="#donate">Financial Transparency</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-col">
-                <h5>Contact Directly</h5>
-                <div class="footer-contact-item">
+                
+                <h3>Contact Us</h3>
+                <div class="contact-pill">
                     <i class="fa-solid fa-phone"></i>
                     <span>+91 9352856134</span>
                 </div>
-                <div class="footer-contact-item">
+                <div class="contact-pill">
                     <i class="fa-solid fa-envelope"></i>
                     <span style="word-break: break-all;">lavkeshsharma74@gmail.com</span>
                 </div>
-                <div class="footer-contact-item">
+                <div class="contact-pill">
                     <i class="fa-solid fa-location-dot"></i>
                     <span>Noida Hub, Uttar Pradesh, India</span>
                 </div>
+
             </div>
+
+            
+
+          
         </div>
-        
+
         <div class="footer-bottom">
-            &copy; 2026 DSPLCARE Organisation. All Rights Reserved. Built with utmost commitment to civic welfare.
+            &copy; 2026 All Rights Reserved, DSPLCARE Organisation.
         </div>
     </footer>
 
-    <!-- Scripts Integration: Leaflet & Count Animations -->
+    <!-- Script Implementations: Maps, Structural Navigation & Dynamic Intersections -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
     <script>
-        // Initialize Map
+        // Interactive Mobile Navigation Toggle Menu System
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        menuToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('open');
+            menuToggle.classList.toggle('fa-bars');
+            menuToggle.classList.toggle('fa-xmark');
+        });
+
+        // Sticky Layout Navbar Adjustments
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if(window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Initialize Map & Sidebar Controls
+        const standsData = [
+            { id: 0, title: "DSPL-001 Sector 62 Hub", lat: 28.627, lng: 77.364, desc: "Primary High-Throughput Filtration Unit" },
+            { id: 1, title: "DSPL-002 Sector 18 Market", lat: 28.570, lng: 77.324, desc: "Commercial Core High-Access Point" },
+            { id: 2, title: "DSPL-003 Sector 76 Metro Route", lat: 28.579, lng: 77.395, desc: "Commuter Density Support Line" },
+            { id: 3, title: "DSPL-004 Pari Chowk Interlink", lat: 28.467, lng: 77.504, desc: "Regional Transit Junction Station" }
+        ];
+
         var map = L.map('map', { scrollWheelZoom: false }).setView([28.570, 77.360], 11);
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
+            attribution: '© OpenStreetMap'
         }).addTo(map);
 
-        // Core Stands Coordinates 
-        const stands = [
-            ["DSPL-001 Sector 62 Hub", 28.627, 77.364],
-            ["DSPL-002 Sector 18 Market", 28.570, 77.324],
-            ["DSPL-003 Sector 76 Station Route", 28.579, 77.395],
-            ["DSPL-004 Pari Chowk Interlink", 28.467, 77.504]
-        ];
+        const markersMap = {};
+        const locationListEl = document.getElementById('locationList');
 
-        stands.forEach(s => {
-            L.marker([s[1], s[2]]).addTo(map).bindPopup(`<b>${s[0]}</b><br>Clean Drinking Water Spot`);
+        // Dynamically Generate Sidebar Items and Map Markers
+        standsData.forEach((stand, idx) => {
+            // Add Marker to Map
+            const marker = L.marker([stand.lat, stand.lng]).addTo(map)
+                .bindPopup(`<b>${stand.title}</b><br>${stand.desc}`);
+            markersMap[stand.id] = marker;
+
+            // Generate Sidebar Item
+            const li = document.createElement('li');
+            li.className = `location-item ${idx === 0 ? 'active' : ''}`;
+            li.dataset.id = stand.id;
+            li.innerHTML = `
+                <h5><i class="fa-solid fa-location-dot"></i> ${stand.title}</h5>
+                <p>${stand.desc}</p>
+            `;
+            
+            li.addEventListener('click', () => {
+                document.querySelectorAll('.location-item').forEach(item => item.classList.remove('active'));
+                li.classList.add('active');
+                map.setView([stand.lat, stand.lng], 14);
+                markersMap[stand.id].openPopup();
+            });
+
+            locationListEl.appendChild(li);
         });
 
         // Numerical Counting Animation Engine via Intersection Observer API
-        const counterModule = () => {
-            const counters = document.querySelectorAll('.counter-number');
-            const speed = 60; // Lower number means faster speed
+        const initCounterAnimations = () => {
+            const counters = document.querySelectorAll('.counter');
+            const animationDuration = 1500; // Total duration in ms
 
-            const startCount = (el) => {
-                const target = parseInt(el.getAttribute('data-target'));
-                let current = 0;
-                const increment = Math.ceil(target / speed);
+            const runCounter = (element) => {
+                const targetValue = parseInt(element.getAttribute('data-target'), 10);
+                const stepTime = Math.max(Math.floor(animationDuration / targetValue), 15);
+                let currentCount = 0;
 
-                const timer = setInterval(() => {
-                    current += increment;
-                    if (current >= target) {
-                        el.innerText = target;
-                        clearInterval(timer);
+                const counterInterval = setInterval(() => {
+                    currentCount += Math.ceil(targetValue / (animationDuration / 30));
+                    if(currentCount >= targetValue) {
+                        element.innerText = targetValue;
+                        clearInterval(counterInterval);
                     } else {
-                        el.innerText = current;
+                        element.innerText = currentCount;
                     }
-                }, 25);
+                }, 30);
             };
 
-            const observer = new IntersectionObserver((entries) => {
+            const observerOptions = { threshold: 0.8, rootMargin: "0px" };
+            const intersectionObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if(entry.isIntersecting) {
-                        startCount(entry.target);
-                        observer.unobserve(entry.target); // Trigger logic only once
+                        runCounter(entry.target);
+                        intersectionObserver.unobserve(entry.target);
                     }
                 });
-            }, { threshold: 0.6 });
+            }, observerOptions);
 
-            counters.forEach(c => observer.observe(c));
+            counters.forEach(counter => intersectionObserver.observe(counter));
         };
 
-        window.addEventListener('DOMContentLoaded', counterModule);
+        window.addEventListener('DOMContentLoaded', initCounterAnimations);
     </script>
 </body>
 </html>
